@@ -55,11 +55,11 @@
             return false;
           }
           // 如果当前小时数等于营业开始小时数，但是当前分钟数小于营业开始分钟数，返回false
-          if ((getCurrentHour() == businessStartHour) && getCurrentMinute < businessStartMinutes) {
+          if ((getCurrentHour() == businessStartHour) && getCurrentMinute() < businessStartMinutes) {
             return false;
           }
           // 如果当前小时数等于营业结束小时数，但是当前分钟数大于营业结束分钟数，返回false
-          if ((getCurrentHour() == businessEndHour) && getCurrentMinute > businessEndMinutes) {
+          if ((getCurrentHour() == businessEndHour) && getCurrentMinute() > businessEndMinutes) {
             return false;
           }
           // 如果执行到这一步，说明对于当前时间符合第一种情况，接下来判断第二种情况
