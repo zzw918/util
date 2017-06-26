@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>testTime</title>
+</head>
+<body>
+  <script>
+
+  
+
+
+    // 假设用户可以设置的上述时间段（数组长度）是不确定的，我们采用迭代的方法， 一旦有一个不满足，就返回false，表示不再营业，否则返回true， 表示在营业状态。 
+    function isBusiness(timeArr) {
+
+      // 获取当前小时数
+      function getCurrentHour() {
+        return new Date().getHours();
+      }
+
+      // 获取当前分钟数
+      function getCurrentMinute() {
+        return new Date().getMinutes();
+      }
+
+      // 打印输出
+      // console.log('当前小时', getCurrentHour());
+      // console.log('当前分钟', getCurrentMinute());
+
+      var arr = timeArr;
+
+      // 循环多个数据
+      for (let i = 0; i < arr.length; i++) {
+        var time = arr[i].substring(0, 11);
+        // 获取到营业的小时数
+        var businessStartHour = parseInt(time.split("~")[0].split(':')[0]);
+        var businessEndHour = parseInt(time.split("~")[1].split(':')[0]);
+        // 获取到营业的分钟数
+        var businessStartMinutes = parseInt(time.split("~")[0].split(':')[1]);
+        var businessEndMinutes = parseInt(time.split("~")[1].split(':')[1]);
+        // console.log('第' + (i + 1) + '个', '开始小时' ,businessStartHour);
+        // console.log('第' + (i + 1) + '个', '结束小时' ,businessEndHour);
+        // console.log('第' + (i + 1) + '个', '开始分钟', businessStartMinutes);
+        // console.log('第' + (i + 1) + '个', '结束分钟', businessEndMinutes);
+
+        // 判断思路： 
+        // 第一种情况  开始小时数小于等于结束小时数，表示正常店铺的营业模式，比如一般的饭店
+        if (businessStartHour <= businessEndHour) {
+          // 如果当前小时数小于营业开始小时数，则返回false
+          if (getCurrentHour() < businessStartHour) {
+            return false;
+          } 
+          // 如果当前小时数大于营业结束小时数，则返回false
+          if (getCurrentHour() > businessEndHour) {
+            return false;
+          }
+          // 如果当前小时数等于营业开始小时数，但是当前分钟数小于营业开始分钟数，返回false
+          if ((getCurrentHour() == businessStartHour) && getCurrentMinute < businessStartMinutes) {
+            return false;
+          }
+          // 如果当前小时数等于营业结束小时数，但是当前分钟数大于营业结束分钟数，返回false
+          if ((getCurrentHour() == businessEndHour) && getCurrentMinute > businessEndMinutes) {
+            return false;
+          }
+          // 如果执行到这一步，说明对于当前时间符合第一种情况，接下来判断第二种情况
+           
+          
+        // 第二种情况 开始小时数大于大于结束小时数，表述特殊店铺的营业模式，比如夜宵、烧烤
+        } else {
+          // 如果当前小时数小于开始小时数 并且 当前小时数大于结束小时数， 返回false
+          if ((getCurrentHour() < businessStartHour) && (getCurrentHour() > businessEndHour)) {
+            return false;
+          }
+          // 如果当前小时数等于开始小时数 并且 当前分钟数小于开始分钟数， 返回false
+          if ((getCurrentHour() == businessStartHour) && (getCurrentMinute() < businessStartMinutes)) {
+            return false;
+          }
+          // 如果当前小时数等于结束小时数 并且 当前分钟数大于结束分钟数， 返回false
+          if ((getCurrentHour() == businessEndHour) && (getCurrentMinute() > businessEndMinutes)) {
+            return false;
+          }
+        }
+      }
+      // 如果执行到这一步，说明当前时间符合全部时间段， 返回true
+      return true;
+    }
+
+    // 数据测试
+    var timeArr1 = ["19:30~23:50 全天营业", "20:45~23:55", "23:45~03:55", ];
+    var timeArr2 = ["19:30~23:50 全天营业"];
+    var timeArr3 = ["06:30~09:20"];
+
+
+    console.log(isBusiness(timeArr1));
+    console.log(isBusiness(timeArr2));
+    console.log(isBusiness(timeArr3));
+  </script>
+</body>
+</html>
